@@ -1,6 +1,13 @@
 [![Generic badge](https://img.shields.io/badge/Status-Under%20Development-yellow.svg)](https://shields.io/)
 
-# Slack Setup
+# TODO
+- [ ] Add CI/CD
+- [ ] Build and push image to dockerhub
+- [ ] Validate k8s deployment
+- [ ] Flesh out docs
+- [ ] Look into slack apps to simplify end user setup
+
+# Manual Slack Setup
 1. [Create a new slack app](https://api.slack.com/apps/new)
 2. Copy `Signing Secret`
 3. Go to `Features > Oauth & Permissions` and grant the following permissions:
@@ -19,7 +26,7 @@
 9. Add a slack command for `/leaderboard`
 
 # Build and Deploy the App
-
+<!-- TODO -->
 
 # Local Development
 1. export the following environment variables (copied when creating the app):
@@ -27,6 +34,10 @@
    2. `SLACK_SIGNING_SECRET`
    3. `SLACK_APP_TOKEN`
 2. run the app with `npm start`
+
+## Testing
+- Run `npm test` to run the tests
+- Run `npm run coverage` to run the tests with coverage output 
 
 ## Docker
 1. export the following environment variables (copied when creating the app):
