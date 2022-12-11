@@ -1,0 +1,23 @@
+{
+  "name": "hubot-avokudos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage --detectOpenHandles",
+    "start": "node index.js",
+    "docker-build": "docker build -t avokudos .",
+    "docker-run": "docker run --rm -it --name avokudos -e SLACK_BOT_TOKEN -e SLACK_SIGNING_SECRET -e SLACK_APP_TOKEN avokudos",
+    "docker-build-and-run": "npm run docker-build && npm run docker-run"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/bolt": "^3.12.2",
+    "redis": "^4.5.1"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
+}

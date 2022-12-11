@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: avokudos-deployment
+  labels:
+    app: avokudos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: avokudos
+  template:
+    metadata:
+      labels:
+        app: avokudos
+    spec:
+      containers:
+        - name: avokudos
+          image: avokudos:1.0.0
+          resources:
+            # TODO: tune this
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          env:
+            - name: SLACK_APP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: avokudos
+                  key: SLACK_APP_TOKEN
+                  optional: false
+            - name: SLACK_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: avokudos
+                  key: SLACK_BOT_TOKEN
+                  optional: false
+            - name: SLACK_SIGNING_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: avokudos
+                  key: SLACK_SIGNING_SECRET
+                  optional: false
+
+            # If REDIS_HOST is not set, avokudos will use in memory storage for tracking kudos
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: avokudos
+                  key: REDIS_HOST
+                  optional: true
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: avokudos
+                  key: REDIS_PORT
+                  optional: true
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: avokudos
+                  key: REDIS_HOST
+                  optional: true
