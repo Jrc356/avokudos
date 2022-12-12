@@ -5,3 +5,7 @@ jest.config.jest
 k8s
 .git
 coverage
+.github
+.tool-versions
+.eslintrc.json
+.prettierrc
