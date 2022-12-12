@@ -37,11 +37,11 @@
 
 ## Testing
 - Run `npm test` to run the tests
-- Run `npm run coverage` to run the tests with coverage output 
+- Run `npm run test:coverage` to run the tests with coverage output 
 
 ## Docker
 1. export the following environment variables (copied when creating the app):
    1. `SLACK_BOT_TOKEN`
    2. `SLACK_SIGNING_SECRET`
    3. `SLACK_APP_TOKEN`
-2. run the app with `npm run docker-build-and-run`
+2. run the app with `npm run docker:build-and-run`
