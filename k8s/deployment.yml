@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: avokudos
-          image: avokudos:1.0.0
+          image: jrc356/avokudos:1.0.0
           resources:
             # TODO: tune this
             requests:
@@ -62,5 +62,5 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: avokudos
-                  key: REDIS_HOST
+                  key: REDIS_PASSWORD
                   optional: true
