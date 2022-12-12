@@ -1,4 +1,7 @@
 FROM node:19-alpine3.16
-COPY . .
-RUN npm ci
+WORKDIR /app
+COPY package.json package-lock.json /app/
+RUN npm ci --omit=dev
+COPY index.js /app/
+COPY lib /app/lib
 CMD ["npm", "start"]
