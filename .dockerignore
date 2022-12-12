@@ -1,2 +1,7 @@
 node_modules
 README.md
+test
+jest.config.jest
+k8s
+.git
+coverage
