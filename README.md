@@ -1,9 +1,6 @@
 [![Generic badge](https://img.shields.io/badge/Status-Under%20Development-yellow.svg)](https://shields.io/)
 
 # TODO
-- [ ] Add CI/CD
-- [ ] Build and push image to dockerhub
-- [ ] Validate k8s deployment
 - [ ] Flesh out docs
 - [ ] Look into slack apps to simplify end user setup
 
