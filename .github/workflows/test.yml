@@ -1,0 +1,36 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".tool-versions"
+
+      - name: Cache node_modules
+        uses: actions/cache
+        with:
+          path: node_modules
+          key: v1-node_modules-${{ hashFiles('package-lock.json') }}-${{ github.head_ref }}
+          restore-keys: |
+            v1-node_modules-${{ hashFiles('package-lock.json') }}-
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run coverage
