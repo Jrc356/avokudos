@@ -1,6 +1,6 @@
 {
   "name": "hubot-avokudos",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A self hosted slack app to show your appreciate for your team 🥑 basically a HeyTaco clone but using avocados",
   "main": "index.js",
   "scripts": {
