@@ -1,15 +1,17 @@
 {
   "name": "hubot-avokudos",
   "version": "1.0.0",
-  "description": "",
+  "description": "A self hosted slack app to show your appreciate for your team 🥑 basically a HeyTaco clone but using avocados",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "coverage": "jest --coverage --detectOpenHandles",
     "start": "node index.js",
-    "docker-build": "docker build -t avokudos .",
-    "docker-run": "docker run --rm -it --name avokudos -e SLACK_BOT_TOKEN -e SLACK_SIGNING_SECRET -e SLACK_APP_TOKEN avokudos",
-    "docker-build-and-run": "npm run docker-build && npm run docker-run"
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --fix --ext .js .",
+    "docker:build": "docker build -t avokudos .",
+    "docker:run": "docker run --rm -it --name avokudos -e SLACK_BOT_TOKEN -e SLACK_SIGNING_SECRET -e SLACK_APP_TOKEN avokudos",
+    "docker:build-and-run": "npm run docker-build && npm run docker-run"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +20,12 @@
     "redis": "^4.5.1"
   },
   "devDependencies": {
-    "jest": "^29.3.1"
+    "eslint": "^8.29.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.6.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "jest": "^29.3.1",
+    "prettier": "^2.8.1"
   }
 }
