@@ -1,5 +1,8 @@
 [![Generic badge](https://img.shields.io/badge/Status-Under%20Development-yellow.svg)](https://shields.io/)
 
+### Scanning
+Snyk: [![Known Vulnerabilities](https://snyk.io/test/github/jrc356/avokudos/badge.svg)](https://snyk.io/test/github/jrc356/avokudos)
+
 # TODO
 - [ ] Flesh out docs
 - [ ] Look into slack apps to simplify end user setup
