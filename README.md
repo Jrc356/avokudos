@@ -15,6 +15,7 @@ Snyk: [![Known Vulnerabilities](https://snyk.io/test/github/jrc356/avokudos/badg
    <!-- TODO: verify this is needed -->
    2. `chat:write`: for the bot to write messages
    3. `reactions:read`: so that the bot can react to reaction events
+   4. `groups:history`: so that the bot can read and react to messages sent in private channels
 4. Install app in workspace
 5. Copy the `Bot User Oauth Toekn`
 6. Enable `Socket Mode` in `Settings > Socket Mode`
