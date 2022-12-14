@@ -24,6 +24,8 @@ Snyk: [![Known Vulnerabilities](https://snyk.io/test/github/jrc356/avokudos/badg
 8. Go to `Features > Event Subscriptions` and enable the following `bot events`:
    1. `message.channels`: so that the bot can react to messages sent in channels
    2. `reaction_added`: so the bot can react to reactions added to messages
+   3. `reaction_removed`: so that the bot can react to reactions removed from messages
+   4. `message.groups`: so the bot can react to messages sent to private channels
 9. Add a slack command for `/leaderboard`
 
 # Build and Deploy the App
