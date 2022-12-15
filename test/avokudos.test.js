@@ -43,7 +43,7 @@ describe('avokudos', () => {
     expect(text).toBe('test message')
   })
 
-  it('gets mentioned users from text', () => {
+  it('gets unique mentioned users from text', () => {
     let text = 'hi <@test>! how are you?'
     let users = avokudos.getMentionedUsers(text)
     expect(users).toStrictEqual(['<@test>'])
@@ -51,6 +51,10 @@ describe('avokudos', () => {
     text = "hey <@test2> this is <@test>. I'm good, how are you?"
     users = avokudos.getMentionedUsers(text)
     expect(users).toStrictEqual(['<@test2>', '<@test>'])
+
+    text = 'hi <@test>! how are you? Mentioning you twice for double the avocados! <@test>'
+    users = avokudos.getMentionedUsers(text)
+    expect(users).toStrictEqual(['<@test>'])
   })
 
   it('gives users mentioned in a message with an avocado and gives those users an avocado', async () => {
