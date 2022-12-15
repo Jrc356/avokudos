@@ -118,6 +118,33 @@ describe('avokudos', () => {
     expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(3)
   })
 
+  it('gives a user mentioned in a message a single avocado if someone reacts to a message that mentions the same user multiple times', async () => {
+    const text =
+      'hey <@test> <@test> :avocado: for helping with that issue!'
+
+    mockSlackClient.conversations.history.mockReturnValueOnce({
+      messages: [
+        {
+          text
+        }
+      ]
+    })
+
+    await avokudos.hearReactionAdded({
+      event: {
+        user: 'test4',
+        item_user: 'test2',
+        item: {
+          channel: 'test_channel',
+          ts: 'test_ts'
+        }
+      },
+      client: mockSlackClient
+    })
+    expect(keeper.keeper.test).toBe(1)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(1)
+  })
+
   it('does not give a user mentioned in a message an avocado if that user reacts to a message mentioning them', async () => {
     const text =
       "hehehe, I'm sneaky and giving myself an avocado through a reaction! <@test>"
@@ -228,6 +255,35 @@ describe('avokudos', () => {
     expect(keeper.keeper.test).toBe(0)
     expect(keeper.keeper.test2).toBe(0)
     expect(keeper.keeper.test3).toBe(0)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(0)
+  })
+
+  it('removes a single avocado from someone if another user removes their avocado reaction from a message containing multiple mentions of the same user', async () => {
+    keeper.keeper.test2 = 2
+
+    const text =
+      'hey <@test2> <@test2> :avocado: for helping with that issue!'
+    mockSlackClient.conversations.history.mockReturnValueOnce({
+      messages: [
+        {
+          text
+        }
+      ]
+    })
+
+    await avokudos.hearReactionRemoved({
+      client: mockSlackClient,
+      event: {
+        user: 'test4',
+        item_user: 'test',
+        item: {
+          channel: 'test_channel',
+          ts: 'test_ts'
+        }
+      }
+    })
+
+    expect(keeper.keeper.test2).toBe(1)
     expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(0)
   })
 
