@@ -43,7 +43,7 @@ describe('avokudos', () => {
     expect(text).toBe('test message')
   })
 
-  it('gets mentioned users from text', () => {
+  it('gets unique mentioned users from text', () => {
     let text = 'hi <@test>! how are you?'
     let users = avokudos.getMentionedUsers(text)
     expect(users).toStrictEqual(['<@test>'])
@@ -51,6 +51,10 @@ describe('avokudos', () => {
     text = "hey <@test2> this is <@test>. I'm good, how are you?"
     users = avokudos.getMentionedUsers(text)
     expect(users).toStrictEqual(['<@test2>', '<@test>'])
+
+    text = 'hi <@test>! how are you? Mentioning you twice for double the avocados! <@test>'
+    users = avokudos.getMentionedUsers(text)
+    expect(users).toStrictEqual(['<@test>'])
   })
 
   it('gives users mentioned in a message with an avocado and gives those users an avocado', async () => {
@@ -112,6 +116,33 @@ describe('avokudos', () => {
     expect(keeper.keeper.test2).toBe(1)
     expect(keeper.keeper.test3).toBe(1)
     expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(3)
+  })
+
+  it('gives a user mentioned in a message a single avocado if someone reacts to a message that mentions the same user multiple times', async () => {
+    const text =
+      'hey <@test> <@test> :avocado: for helping with that issue!'
+
+    mockSlackClient.conversations.history.mockReturnValueOnce({
+      messages: [
+        {
+          text
+        }
+      ]
+    })
+
+    await avokudos.hearReactionAdded({
+      event: {
+        user: 'test4',
+        item_user: 'test2',
+        item: {
+          channel: 'test_channel',
+          ts: 'test_ts'
+        }
+      },
+      client: mockSlackClient
+    })
+    expect(keeper.keeper.test).toBe(1)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(1)
   })
 
   it('does not give a user mentioned in a message an avocado if that user reacts to a message mentioning them', async () => {
@@ -224,6 +255,35 @@ describe('avokudos', () => {
     expect(keeper.keeper.test).toBe(0)
     expect(keeper.keeper.test2).toBe(0)
     expect(keeper.keeper.test3).toBe(0)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(0)
+  })
+
+  it('removes a single avocado from someone if another user removes their avocado reaction from a message containing multiple mentions of the same user', async () => {
+    keeper.keeper.test2 = 2
+
+    const text =
+      'hey <@test2> <@test2> :avocado: for helping with that issue!'
+    mockSlackClient.conversations.history.mockReturnValueOnce({
+      messages: [
+        {
+          text
+        }
+      ]
+    })
+
+    await avokudos.hearReactionRemoved({
+      client: mockSlackClient,
+      event: {
+        user: 'test4',
+        item_user: 'test',
+        item: {
+          channel: 'test_channel',
+          ts: 'test_ts'
+        }
+      }
+    })
+
+    expect(keeper.keeper.test2).toBe(1)
     expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(0)
   })
 
