@@ -90,7 +90,7 @@ describe('avokudos', () => {
     expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(0)
   })
 
-  it('gives users mentioned in a message an avocado if someone reacts to a message that mentions users', async () => {
+  it('gives users mentioned in a message an avocado if someone reacts to a message that mentions users with an avocado', async () => {
     const text =
       'hey <@test> <@test2> <@test3> :avocado: for helping with that issue!'
 
@@ -105,6 +105,7 @@ describe('avokudos', () => {
     await avokudos.hearReactionAdded({
       event: {
         user: 'test4',
+        reaction: 'avocado',
         item_user: 'test2',
         item: {
           channel: 'test_channel',
@@ -117,6 +118,36 @@ describe('avokudos', () => {
     expect(keeper.keeper.test2).toBe(1)
     expect(keeper.keeper.test3).toBe(1)
     expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(3)
+  })
+
+  it('does not give users an avocado if the reaction used is not an avocado', async () => {
+    const text =
+      'hey <@test> <@test2> <@test3> :avocado: for helping with that issue!'
+
+    mockSlackClient.conversations.history.mockReturnValueOnce({
+      messages: [
+        {
+          text
+        }
+      ]
+    })
+
+    await avokudos.hearReactionAdded({
+      event: {
+        user: 'test4',
+        reaction: 'raised_hands',
+        item_user: 'test2',
+        item: {
+          channel: 'test_channel',
+          ts: 'test_ts'
+        }
+      },
+      client: mockSlackClient
+    })
+    expect(keeper.keeper.test).toBe(undefined)
+    expect(keeper.keeper.test2).toBe(undefined)
+    expect(keeper.keeper.test3).toBe(undefined)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(0)
   })
 
   it('gives a user mentioned in a message a single avocado if someone reacts to a message that mentions the same user multiple times', async () => {
@@ -135,6 +166,7 @@ describe('avokudos', () => {
       event: {
         user: 'test4',
         item_user: 'test2',
+        reaction: 'avocado',
         item: {
           channel: 'test_channel',
           ts: 'test_ts'
@@ -162,6 +194,7 @@ describe('avokudos', () => {
       event: {
         user: 'test',
         item_user: 'test2',
+        reaction: 'avocado',
         item: {
           channel: 'test_channel',
           ts: 'test_ts'
@@ -187,6 +220,7 @@ describe('avokudos', () => {
       event: {
         user: 'test4',
         item_user: 'test2',
+        reaction: 'avocado',
         item: {
           channel: 'test_channel',
           ts: 'test_ts'
@@ -214,6 +248,7 @@ describe('avokudos', () => {
       event: {
         user: 'test2',
         item_user: 'test2',
+        reaction: 'avocado',
         item: {
           channel: 'test_channel',
           ts: 'test_ts'
@@ -246,6 +281,7 @@ describe('avokudos', () => {
       event: {
         user: 'test4',
         item_user: 'test',
+        reaction: 'avocado',
         item: {
           channel: 'test_channel',
           ts: 'test_ts'
@@ -277,6 +313,7 @@ describe('avokudos', () => {
       event: {
         user: 'test4',
         item_user: 'test',
+        reaction: 'avocado',
         item: {
           channel: 'test_channel',
           ts: 'test_ts'
@@ -305,6 +342,7 @@ describe('avokudos', () => {
       event: {
         user: 'test4',
         item_user: 'test',
+        reaction: 'avocado',
         item: {
           channel: 'test_channel',
           ts: 'test_ts'
@@ -332,6 +370,7 @@ describe('avokudos', () => {
       client: mockSlackClient,
       event: {
         user: 'test',
+        reaction: 'avocado',
         item_user: 'test',
         item: {
           channel: 'test_channel',
@@ -361,6 +400,36 @@ describe('avokudos', () => {
       event: {
         user: 'test',
         item_user: 'test',
+        reaction: 'avocado',
+        item: {
+          channel: 'test_channel',
+          ts: 'test_ts'
+        }
+      }
+    })
+
+    expect(keeper.keeper.test).toBe(1)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(0)
+  })
+
+  it('does not remove an avocado from someone if the reaction removed is not an avocado', async () => {
+    keeper.keeper.test = 1
+
+    const text = "I'm weird and want to remove an avocado from myself!"
+    mockSlackClient.conversations.history.mockReturnValueOnce({
+      messages: [
+        {
+          text
+        }
+      ]
+    })
+
+    await avokudos.hearReactionRemoved({
+      client: mockSlackClient,
+      event: {
+        user: 'test',
+        item_user: 'test2',
+        reaction: 'raised_hands',
         item: {
           channel: 'test_channel',
           ts: 'test_ts'
