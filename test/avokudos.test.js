@@ -56,6 +56,10 @@ describe('avokudos', () => {
     text = 'hi <@test>! how are you? Mentioning you twice for double the avocados! <@test>'
     users = avokudos.getMentionedUsers(text)
     expect(users).toStrictEqual(['<@test>'])
+
+    text = 'Hi, I\'m good, thanks for asking'
+    users = avokudos.getMentionedUsers(text)
+    expect(users).toStrictEqual([])
   })
 
   it('gives users mentioned in a message with an avocado and gives those users an avocado', async () => {
@@ -450,7 +454,8 @@ describe('avokudos', () => {
 
     const mockRes = {
       ack: jest.fn(),
-      respond: jest.fn()
+      respond: jest.fn(),
+      body: {}
     }
 
     await avokudos.getLeaderboard(mockRes)
