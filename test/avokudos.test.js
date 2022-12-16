@@ -16,7 +16,7 @@ describe('avokudos', () => {
         getPermalink: jest.fn(() => 'test')
       },
       conversations: {
-        history: jest.fn()
+        replies: jest.fn()
       }
     }
   })
@@ -32,7 +32,7 @@ describe('avokudos', () => {
   })
 
   it('retrieves a message from slack client', async () => {
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text: 'test message'
@@ -40,7 +40,7 @@ describe('avokudos', () => {
       ]
     })
     const text = await avokudos.getMessage(mockSlackClient, 'test', 'test')
-    expect(mockSlackClient.conversations.history.mock.calls.length).toBe(1)
+    expect(mockSlackClient.conversations.replies.mock.calls.length).toBe(1)
     expect(text).toBe('test message')
   })
 
@@ -98,7 +98,7 @@ describe('avokudos', () => {
     const text =
       'hey <@test> <@test2> <@test3> :avocado: for helping with that issue!'
 
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -128,7 +128,7 @@ describe('avokudos', () => {
     const text =
       'hey <@test> <@test2> <@test3> :avocado: for helping with that issue!'
 
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -158,7 +158,7 @@ describe('avokudos', () => {
     const text =
       'hey <@test> <@test> :avocado: for helping with that issue!'
 
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -186,7 +186,7 @@ describe('avokudos', () => {
     const text =
       "hehehe, I'm sneaky and giving myself an avocado through a reaction! <@test>"
 
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -212,7 +212,7 @@ describe('avokudos', () => {
 
   it('gives a user an avocado if the message is reacted to and the message does not contain any mentions', async () => {
     const text = 'I just did a thing!'
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -240,7 +240,7 @@ describe('avokudos', () => {
   it('does not give a user an avocado if the user reacts to their own message and the message does not contain any mentions', async () => {
     const text =
       "hehehe, I'm sneaky and giving myself an avocado through a reaction and no mentions"
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -272,7 +272,7 @@ describe('avokudos', () => {
 
     const text =
       'hey <@test> <@test2> <@test3> :avocado: for helping with that issue!'
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -304,7 +304,7 @@ describe('avokudos', () => {
 
     const text =
       'hey <@test2> <@test2> :avocado: for helping with that issue!'
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -333,7 +333,7 @@ describe('avokudos', () => {
     keeper.keeper.test = 1
 
     const text = 'Hey I did a thing!'
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -362,7 +362,7 @@ describe('avokudos', () => {
     keeper.keeper.test = 1
 
     const text = "I'm weird and want to remove an avocado from myself! <@test>"
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -391,7 +391,7 @@ describe('avokudos', () => {
     keeper.keeper.test = 1
 
     const text = "I'm weird and want to remove an avocado from myself!"
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
@@ -420,7 +420,7 @@ describe('avokudos', () => {
     keeper.keeper.test = 1
 
     const text = "I'm weird and want to remove an avocado from myself!"
-    mockSlackClient.conversations.history.mockReturnValueOnce({
+    mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
         {
           text
