@@ -12,7 +12,8 @@ describe('avokudos', () => {
 
     mockSlackClient = {
       chat: {
-        postMessage: jest.fn()
+        postMessage: jest.fn(),
+        getPermalink: jest.fn(() => 'test')
       },
       conversations: {
         history: jest.fn()
