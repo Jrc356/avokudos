@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: avokudos
-          image: jrc356/avokudos:0.1.0
+          image: jrc356/avokudos:0.2.0
           resources:
             # TODO: tune this
             requests:
