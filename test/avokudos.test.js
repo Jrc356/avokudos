@@ -4,12 +4,14 @@ const { LocalKeeper } = require('../lib/keepers/local')
 let mockSlackClient
 let avokudos
 let keeper
+let mockUserInfo
 
 describe('avokudos', () => {
   beforeEach(() => {
     keeper = new LocalKeeper()
     avokudos = new Avokudos(keeper)
 
+    mockUserInfo = { user: { is_bot: false } }
     mockSlackClient = {
       chat: {
         postMessage: jest.fn(),
@@ -17,6 +19,9 @@ describe('avokudos', () => {
       },
       conversations: {
         replies: jest.fn()
+      },
+      users: {
+        info: jest.fn(() => mockUserInfo)
       }
     }
   })
@@ -59,6 +64,13 @@ describe('avokudos', () => {
 
     text = 'Hi, I\'m good, thanks for asking'
     users = avokudos.getMentionedUsers(text)
+    expect(users).toStrictEqual([])
+  })
+
+  it('filters out bot users', async () => {
+    mockUserInfo.user.is_bot = true
+    mockSlackClient.users.info.mockReturnValueOnce(mockUserInfo)
+    const users = await avokudos.filterUsers(mockSlackClient, '<@test>', ['<@bot_user>'])
     expect(users).toStrictEqual([])
   })
 
@@ -184,7 +196,7 @@ describe('avokudos', () => {
 
   it('does not give a user mentioned in a message an avocado if that user reacts to a message mentioning them', async () => {
     const text =
-      "hehehe, I'm sneaky and giving myself an avocado through a reaction! <@test>"
+      'hey <@test>, lets be sneaky and give you an avocado by reacting to this message mentioning you!'
 
     mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
@@ -207,7 +219,8 @@ describe('avokudos', () => {
       client: mockSlackClient
     })
     expect(keeper.keeper.test).toBe(undefined)
-    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(0)
+    expect(keeper.keeper.test2).toBe(1)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(1)
   })
 
   it('gives a user an avocado if the message is reacted to and the message does not contain any mentions', async () => {
