@@ -36,6 +36,11 @@ describe('avokudos', () => {
     expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(1)
   })
 
+  it('notifies a user when they send kudos', async () => {
+    await avokudos.sendUserSentNotification(mockSlackClient, 'test', ['test'])
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(1)
+  })
+
   it('retrieves a message from slack client', async () => {
     mockSlackClient.conversations.replies.mockReturnValueOnce({
       messages: [
@@ -88,7 +93,7 @@ describe('avokudos', () => {
     expect(keeper.keeper.test).toBe(1)
     expect(keeper.keeper.test2).toBe(1)
     expect(keeper.keeper.test3).toBe(1)
-    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(3)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(4)
   })
 
   it('does not give a user avocados by mentioning themselves in a message', async () => {
@@ -133,7 +138,7 @@ describe('avokudos', () => {
     expect(keeper.keeper.test).toBe(1)
     expect(keeper.keeper.test2).toBe(1)
     expect(keeper.keeper.test3).toBe(1)
-    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(3)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(4)
   })
 
   it('does not give users an avocado if the reaction used is not an avocado', async () => {
@@ -191,7 +196,7 @@ describe('avokudos', () => {
       client: mockSlackClient
     })
     expect(keeper.keeper.test).toBe(1)
-    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(1)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(2)
   })
 
   it('does not give a user mentioned in a message an avocado if that user reacts to a message mentioning them', async () => {
@@ -220,7 +225,7 @@ describe('avokudos', () => {
     })
     expect(keeper.keeper.test).toBe(undefined)
     expect(keeper.keeper.test2).toBe(1)
-    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(1)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(2)
   })
 
   it('gives a user an avocado if the message is reacted to and the message does not contain any mentions', async () => {
@@ -247,7 +252,7 @@ describe('avokudos', () => {
     })
 
     expect(keeper.keeper.test2).toBe(1)
-    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(1)
+    expect(mockSlackClient.chat.postMessage.mock.calls.length).toBe(2)
   })
 
   it('does not give a user an avocado if the user reacts to their own message and the message does not contain any mentions', async () => {
