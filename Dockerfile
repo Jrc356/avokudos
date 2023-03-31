@@ -1,4 +1,4 @@
-FROM node:19.6-alpine3.16
+FROM node:current-alpine3.16
 WORKDIR /app
 COPY package.json package-lock.json /app/
 RUN npm ci --omit=dev
