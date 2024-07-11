@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@slack/bolt": "^3.18.0",
+    "@slack/bolt": "^3.19.0",
     "redis": "^4.6.14"
   },
   "devDependencies": {
