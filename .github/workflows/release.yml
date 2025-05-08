@@ -23,3 +23,4 @@ jobs:
         with:
           push: true
           tags: jrc356/avokudos:${{ github.ref_name }}
+          platforms: linux/amd64,linux/arm64
